@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>To: 2026年 ⚡️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: #050505;
+            overflow: hidden;
+            font-family: 'Ma Shan Zheng', cursive; /* 书法字体 */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        /* 1. 启动层 */
+        #start-mask {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 0.8s;
+        }
+        .start-btn {
+            padding: 20px 50px;
+            font-size: 1.5rem;
+            color: #fff;
+            background: #ff003c; /* 抖音红 */
+            border: none; border-radius: 50px;
+            box-shadow: 0 0 20px #ff003c;
+            cursor: pointer;
+            animation: pulse 1s infinite;
+            font-family: inherit;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px #ff003c; }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px #ff003c; }
+            100% { transform: scale(1); box-shadow: 0 0 20px #ff003c; }
+        }
+
+        /* 2. 中心名字区域 */
+        #center-box {
+            position: relative;
+            z-index: 100;
+            text-align: center;
+            transition: all 0.5s;
+        }
+        .name-title {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 2px 2px 0px #ff003c, -2px -2px 0px #00f0ff; /* 故障风阴影 */
+            margin-bottom: 10px;
+            white-space: nowrap;
+            animation: shake 0.5s infinite; /* 增加一点抖动感 */
+        }
+        @keyframes shake {
+            0% { transform: translate(0,0); }
+            25% { transform: translate(1px, 1px); }
+            50% { transform: translate(-1px, -1px); }
+            75% { transform: translate(-1px, 1px); }
+            100% { transform: translate(0,0); }
+        }
+        .sub-text {
+            color: #aaa; font-size: 1.2rem; letter-spacing: 2px;
+        }
+
+        /* 3. 接收按钮（隐藏） */
+        #receive-btn {
+            margin-top: 30px;
+            padding: 10px 40px;
+            background: transparent;
+            border: 2px solid #00f0ff;
+            color: #00f0ff;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 0 15px #00f0ff;
+        }
+
+        /* 4. 弹幕文字样式 */
+        .pop-word {
+            position: absolute;
+            font-size: 1.5rem;
+            font-weight: bold;
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap;
+            /* 弹跳动画 */
+            animation: elasticPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            text-shadow: 0 0 8px rgba(0,0,0,0.8);
+        }
+        
+        .color-red { color: #ff003c; text-shadow: 0 0 10px #ff003c; }
+        .color-blue { color: #00f0ff; text-shadow: 0 0 10px #00f0ff; }
+        .color-white { color: #ffffff; text-shadow: 0 0 10px #ffffff; }
+        .color-gold { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
+
+        @keyframes elasticPop {
+            0% { opacity: 0; transform: scale(0); }
+            60% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* 5. 结局文字 */
+        #final-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; z-index: 200;
+            background: radial-gradient(circle, #220000 0%, #000000 90%);
+        }
+        .final-p {
+            font-size: 1.5rem; margin: 10px; opacity: 0; transform: translateY(20px);
+            transition: all 1s;
+        }
+        .final-p.show { opacity: 1; transform: translateY(0); }
+
+    </style>
+</head>
+<body>
+
+    <div id="start-mask">
+        <div style="color: #888; margin-bottom: 20px; font-size: 0.9rem;">⚠️ 必须手动点击播放音乐</div>
+        <button class="start-btn" id="init-btn">点击播放 Mr.BrokenHeart ▶</button>
+    </div>
+
+    <audio id="bgm" loop preload="auto">
+        <source src="bgm.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="center-box">
+        <div class="name-title">2026年的林蓓蓓</div>
+        <div class="sub-title" style="color:#fff; opacity:0.8">一定要更加闪闪发光</div>
+        <button id="receive-btn">⚡️ 接收全屏好运 ⚡️</button>
+    </div>
+
+    <div id="final-screen">
+        <p class="final-p">文字太多，屏幕都装不下了</p>
+        <p class="final-p">其实千言万语就一句话</p>
+        <p class="final-p" style="color: #ff003c; font-size: 2rem; margin-top: 30px;">愿你永远快乐，无论何时</p>
+    </div>
+
+    <script>
+        // ================== 【核心配置区】 ==================
+        
+        // 1. 调整快慢（单位：秒）
+        // -0.8：字比音乐慢出来，有节奏感
+        const delayAdjust = -0.8; 
+
+        // 2. 节奏速度 (间隔)
+        // 0.32：较快，配合DJ节奏
+        const beatInterval = 0.32; 
+
+        // 3. 词库
+        const words = [
+            "绝美", "暴富", "上岸", "自由", "热烈", "心动",
+            "元气满满", "财源滚滚", "桃花朵朵", "无灾无难", 
+            "光芒万丈", "未来可期", "永远热泪盈眶", "如约而至",
+            "快乐", "迷人", "清醒", "独立", "好运", "锦鲤",
+            "大女主", "颜值爆表", "发财被爱", "事事顺心",
+            "有钱有颜", "百无禁忌", "风生水起", "岁岁平安",
+            "可盐可甜", "C位出道", "天生丽质", "熠熠生辉",
+            "有人爱", "有钱花", "不挂科", "不脱发", "变瘦",
+            "遇见良人", "早日脱单", "全场最美", "气质拿捏"
+        ];
+        // ===================================================
+
+        const initBtn = document.getElementById('init-btn');
+        const startMask = document.getElementById('start-mask');
+        const bgm = document.getElementById('bgm');
+        const centerBox = document.getElementById('center-box');
+        const receiveBtn = document.getElementById('receive-btn');
+        const finalScreen = document.getElementById('final-screen');
+
+        let isRunning = false;
+        let lastBeatTime = 0;
+        let wordCount = 0;
+        let allElements = [];
+
+        // 1. 点击播放
+        initBtn.addEventListener('click', () => {
+            startMask.style.opacity = 0;
+            setTimeout(() => startMask.style.display = 'none', 800);
+
+            // 播放音乐
+            bgm.play().then(() => {
+                console.log("BGM播放成功");
+            }).catch(e => {
+                console.log("BGM播放失败", e);
+            });
+
+            isRunning = true;
+            loop(); // 启动循环
+        });
+
+        // 2. 精准卡点循环
+        function loop() {
+            if (!isRunning) return;
+            requestAnimationFrame(loop);
+
+            const currentTime = bgm.currentTime; // 获取音乐当前秒数
+
+            // 逻辑：当前音乐时间(减去延迟) > 下一次出字时间
+            if (currentTime + delayAdjust > lastBeatTime + beatInterval) {
+                
+                // 出字
+                createWord();
+                
+                // 更新标记
+                lastBeatTime = currentTime + delayAdjust;
+                wordCount++;
+
+                // 数量限制，太多了就停
+                if (wordCount > 120) {
+                    stopAndShowBtn();
+                }
+            }
+        }
+
+        // 3. 创建文字
+        function createWord() {
+            // 每次只出1个词
+            let num = 1; 
+            for(let i=0; i<num; i++) {
+                const el = document.createElement('div');
+                el.innerText = words[Math.floor(Math.random() * words.length)];
+                el.className = 'pop-word';
+                
+                // 随机颜色
+                const styles = ['color-red', 'color-blue', 'color-white', 'color-gold'];
+                el.classList.add(styles[Math.floor(Math.random() * styles.length)]);
+
+                // 随机大小
+                el.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+
+                // 智能位置
+                const pos = getSafePos();
+                el.style.left = pos.x + 'px';
+                el.style.top = pos.y + 'px';
+
+                // 随机旋转
+                el.style.transform = `rotate(${Math.random()*40 - 20}deg)`;
+
+                document.body.appendChild(el);
+                allElements.push(el);
+            }
+        }
+
+        // 位置计算
+        function getSafePos() {
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            const cx = w / 2;
+            const cy = h / 2;
+            const safeW = 320; 
+            const safeH = 180;
+
+            let x, y, safe = false;
+            while (!safe) {
+                x = Math.random() * (w - 100);
+                y = Math.random() * (h - 50);
+                if (Math.abs(x - cx + 50) > safeW/2 || Math.abs(y - cy + 25) > safeH/2) {
+                    safe = true;
+                }
+            }
+            return {x, y};
+        }
+
+        // 4. 停止并显示按钮
+        function stopAndShowBtn() {
+            isRunning = false;
+            receiveBtn.style.display = 'inline-block';
+            receiveBtn.animate([
+                { transform: 'scale(0)' },
+                { transform: 'scale(1)' }
+            ], { duration: 500, easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)' });
+        }
+
+        // 5. 结局动画
+        receiveBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            centerBox.style.opacity = 0;
+            centerBox.style.transform = 'scale(0)';
+
+            allElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const dx = rect.left - window.innerWidth/2;
+                const dy = rect.top - window.innerHeight/2;
+                el.style.transition = 'all 1s ease-out';
+                el.style.transform = `translate(${dx * 2}px, ${dy * 2}px) scale(0)`;
+                el.style.opacity = 0;
+            });
+
+            finalScreen.style.opacity = 1;
+            setTimeout(() => {
+                const ps = document.querySelectorAll('.final-p');
+                ps[0].classList.add('show');
+                setTimeout(() => ps[1].classList.add('show'), 1500);
+                setTimeout(() => ps[2].classList.add('show'), 3000);
+            }, 500);
+        });
+
+    </script>
+</body>
+</html>
