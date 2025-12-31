@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>To: 2026年⚡️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: #050505;
+            overflow: hidden;
+            font-family: 'Ma Shan Zheng', cursive;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        /* 1. 启动层 */
+        #start-mask {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 0.8s;
+        }
+        .start-btn {
+            padding: 20px 50px;
+            font-size: 1.5rem;
+            color: #fff;
+            background: #ff003c; /* 抖音红 */
+            border: none; border-radius: 50px;
+            box-shadow: 0 0 20px #ff003c;
+            cursor: pointer;
+            animation: pulse 1s infinite;
+            font-family: inherit;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px #ff003c; }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px #ff003c; }
+            100% { transform: scale(1); box-shadow: 0 0 20px #ff003c; }
+        }
+
+        /* 2. 中心名字区域 */
+        #center-box {
+            position: relative;
+            z-index: 100;
+            text-align: center;
+            transition: all 0.5s;
+        }
+        .name-title {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 2px 2px 0px #ff003c, -2px -2px 0px #00f0ff;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            animation: shake 0.5s infinite; 
+        }
+        @keyframes shake {
+            0% { transform: translate(0,0); }
+            25% { transform: translate(1px, 1px); }
+            50% { transform: translate(-1px, -1px); }
+            75% { transform: translate(-1px, 1px); }
+            100% { transform: translate(0,0); }
+        }
+        .sub-text {
+            color: #aaa; font-size: 1.2rem; letter-spacing: 2px;
+        }
+
+        /* 3. 接收按钮（隐藏） */
+        #receive-btn {
+            margin-top: 30px;
+            padding: 10px 40px;
+            background: transparent;
+            border: 2px solid #00f0ff;
+            color: #00f0ff;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 0 15px #00f0ff;
+        }
+
+        /* 4. 弹幕文字样式 */
+        .pop-word {
+            position: absolute;
+            font-weight: bold;
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap;
+            /* 弹跳动画 */
+            animation: elasticPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            text-shadow: 0 0 8px rgba(0,0,0,0.8);
+        }
+        
+        .color-red { color: #ff003c; text-shadow: 0 0 10px #ff003c; }
+        .color-blue { color: #00f0ff; text-shadow: 0 0 10px #00f0ff; }
+        .color-white { color: #ffffff; text-shadow: 0 0 10px #ffffff; }
+        .color-gold { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
+
+        @keyframes elasticPop {
+            0% { opacity: 0; transform: scale(0); }
+            60% { opacity: 1; transform: scale(1.4); } 
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* 5. 结局文字 */
+        #final-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; z-index: 200;
+            background: radial-gradient(circle, #220000 0%, #000000 90%);
+        }
+        .final-p {
+            font-size: 1.5rem; margin: 10px; opacity: 0; transform: translateY(20px);
+            transition: all 1s;
+        }
+        .final-p.show { opacity: 1; transform: translateY(0); }
+
+    </style>
+</head>
+<body>
+
+    <div id="start-mask">
+        <div style="color: #888; margin-bottom: 20px; font-size: 0.9rem;">⚠️ 必须手动点击播放音乐</div>
+        <button class="start-btn" id="init-btn">点击播放 Mr.BrokenHeart ▶</button>
+    </div>
+
+    <audio id="bgm" loop preload="auto">
+        <source src="bgm.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="center-box">
+        <div class="name-title">2026年的林蓓蓓</div>
+        <div class="sub-text" style="color:#fff; opacity:0.8; font-size: 1rem;">一定要更加闪闪发光</div>
+        <button id="receive-btn">⚡️ 接收全屏好运 ⚡️</button>
+    </div>
+
+    <div id="final-screen">
+        <p class="final-p">文字太多，屏幕都装不下了</p>
+        <p class="final-p">其实千言万语就一句话</p>
+        <p class="final-p" style="color: #ff003c; font-size: 2rem; margin-top: 30px;">愿你永远快乐，无论何时</p>
+    </div>
+
+    <script>
+        // ================== 【核心配置区】 ==================
+        
+        // 1. 【延迟启动】(单位：秒)
+        // 改成了 -2.0
+        // 点击播放后，音乐响 2秒，文字开始出现
+        const delayAdjust = -2.0; 
+
+        // 2. 【出字速度】(单位：秒)
+        // 0.15：保持极速
+        const beatInterval = 0.15; 
+
+        // 3. 词库 (学生党·丰富版)
+        const words = [
+            "逢考必过", "绩点起飞", "不挂科", "考的全会", "蒙的全对",
+            "灵感爆发", "脑洞大开", "也是个天才", "才华横溢", "学术锦鲤",
+            "过过过", "稳住", "绝不内卷", "轻松拿捏", "Offer",
+            "论文秒过", "奖学金拿来", "英语高分","万事胜意","平安喜乐","熠熠生辉","龙马精神","自由美丽",
+            "芜湖", "起飞", "泰酷辣", "赢麻了", "尊嘟假嘟",
+            "遥遥领先", "主打一个顺", "精神状态良好", "纯享版快乐", "必须拿下",
+            "吃嘛嘛香", "睡个好觉", "发量惊人", "奶茶自由", "快乐加倍",
+            "元气满满", "可可爱爱", "奇奇怪怪", "美美哒", "哈哈哈",
+            "笑口常开", "无忧无虑", "没心没肺", "烦恼走开", "水逆退散",
+            "烤肉自由", "火锅自由", "不做脆皮", "禁止焦虑", "拒绝内耗",
+             "闪闪发光", "天生丽质", "氛围感", "绝美",
+           "气质满分", "今日最美", "自信放光芒", "小仙女",
+            "美貌营业", "生图杀手", "发际线挺住", "皮肤通透", "狂吃不胖",
+            "颜值山脉", "在逃公主", "有效化妆", "清醒独立", "独美",
+            "平安喜乐", "万事胜意", "好运爆棚", "心想事成", "自由自在",
+            "前程似锦", "未来可期", "天天开心", "百无禁忌", "欧气满满"
+        ];
+        // ===================================================
+
+        const initBtn = document.getElementById('init-btn');
+        const startMask = document.getElementById('start-mask');
+        const bgm = document.getElementById('bgm');
+        const centerBox = document.getElementById('center-box');
+        const receiveBtn = document.getElementById('receive-btn');
+        const finalScreen = document.getElementById('final-screen');
+
+        let isRunning = false;
+        let lastBeatTime = 0;
+        let wordCount = 0;
+        let occupiedRects = []; // 防重叠
+
+        initBtn.addEventListener('click', () => {
+            startMask.style.opacity = 0;
+            setTimeout(() => startMask.style.display = 'none', 800);
+
+            bgm.play().then(() => { console.log("BGM OK"); }).catch(e => { console.log("BGM Fail", e); });
+
+            isRunning = true;
+            loop(); 
+        });
+
+        function loop() {
+            if (!isRunning) return;
+            requestAnimationFrame(loop);
+
+            const currentTime = bgm.currentTime; 
+
+            // 卡点逻辑
+            if (currentTime + delayAdjust > lastBeatTime + beatInterval) {
+                createWord();
+                lastBeatTime = currentTime + delayAdjust;
+                wordCount++;
+                if (wordCount > 130) stopAndShowBtn(); 
+            }
+        }
+
+        function createWord() {
+            const el = document.createElement('div');
+            el.innerText = words[Math.floor(Math.random() * words.length)];
+            el.className = 'pop-word';
+            
+            const styles = ['color-red', 'color-blue', 'color-white', 'color-gold'];
+            el.classList.add(styles[Math.floor(Math.random() * styles.length)]);
+
+            // 字体大小 (随机大字体)
+            const fontSize = Math.random() * 2.5 + 2.0;
+            el.style.fontSize = fontSize + 'rem';
+
+            // 智能找空位
+            const approxWidth = fontSize * el.innerText.length * 16 * 1.0; 
+            const approxHeight = fontSize * 16 * 1.2;
+
+            const pos = getSafePosWithCollision(approxWidth, approxHeight);
+            el.style.left = pos.x + 'px';
+            el.style.top = pos.y + 'px';
+            el.style.transform = `rotate(${Math.random()*40 - 20}deg)`;
+
+            document.body.appendChild(el);
+
+            occupiedRects.push({ x: pos.x, y: pos.y, w: approxWidth, h: approxHeight });
+            if (occupiedRects.length > 25) occupiedRects.shift();
+        }
+
+        // 防重叠算法
+        function getSafePosWithCollision(w, h) {
+            const screenW = window.innerWidth;
+            const screenH = window.innerHeight;
+            const cx = screenW / 2;
+            const cy = screenH / 2;
+            const centerSafeW = 340; 
+            const centerSafeH = 200;
+
+            let bestX = 0, bestY = 0;
+            let found = false;
+            let maxAttempts = 60; 
+
+            for (let i = 0; i < maxAttempts; i++) {
+                let x = Math.random() * (screenW - w);
+                let y = Math.random() * (screenH - h);
+                
+                // 1. 避开中间
+                if (Math.abs(x - cx + w/2) < centerSafeW/2 + w/2 && 
+                    Math.abs(y - cy + h/2) < centerSafeH/2 + h/2) {
+                    continue; 
+                }
+
+                // 2. 避开其他字
+                let overlap = false;
+                for (let rect of occupiedRects) {
+                    if (x < rect.x + rect.w && x + w > rect.x &&
+                        y < rect.y + rect.h && y + h > rect.y) {
+                        overlap = true;
+                        break;
+                    }
+                }
+
+                if (!overlap) {
+                    bestX = x; bestY = y; found = true; break; 
+                }
+            }
+
+            if (!found) {
+                bestX = Math.random() * (screenW - w);
+                bestY = Math.random() * (screenH - h);
+            }
+            return {x: bestX, y: bestY};
+        }
+
+        function stopAndShowBtn() {
+            isRunning = false;
+            receiveBtn.style.display = 'inline-block';
+            receiveBtn.animate([
+                { transform: 'scale(0)' },
+                { transform: 'scale(1)' }
+            ], { duration: 500, easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)' });
+        }
+
+        receiveBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            centerBox.style.opacity = 0;
+            centerBox.style.transform = 'scale(0)';
+
+            document.querySelectorAll('.pop-word').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const dx = rect.left - window.innerWidth/2;
+                const dy = rect.top - window.innerHeight/2;
+                el.style.transition = 'all 1s ease-out';
+                el.style.transform = `translate(${dx * 2}px, ${dy * 2}px) scale(0)`;
+                el.style.opacity = 0;
+            });
+
+            finalScreen.style.opacity = 1;
+            setTimeout(() => {
+                const ps = document.querySelectorAll('.final-p');
+                ps[0].classList.add('show');
+                setTimeout(() => ps[1].classList.add('show'), 1500);
+                setTimeout(() => ps[2].classList.add('show'), 3000);
+            }, 500);
+        });
+
+    </script>
+</body>
+</html>
